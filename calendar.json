@@ -1,0 +1,11 @@
+{
+  "recurrent": [
+    {
+      "task_first_date": "15.03.2021",
+      "task_time": "08:00",
+      "task_name": "Алина. Ледовый",
+      "is_recurrent_weekly": true,
+      "comment": ""
+    }
+  ]
+}
