@@ -1,11 +1,22 @@
 {
-  "recurrent": [
-    {
-      "task_first_date": "15.03.2021",
-      "task_time": "08:00",
-      "task_name": "Алина. Ледовый",
-      "is_recurrent_weekly": true,
-      "comment": ""
-    }
-  ]
+    "recurrent": [
+        {
+            "task_first_date": "15.03.2021",
+            "task_time": "08:00",
+            "task_name": "Алина. Ледовый",
+            "comment": ""
+        },
+        {
+            "task_first_date": "16.03.2021",
+            "task_time": "09:00",
+            "task_name": "Новое задание",
+            "comment": "Взять коньки"
+        }
+    ],
+    "birthdays": [
+
+    ],
+    "onetimers": [
+
+    ]
 }
