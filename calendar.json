@@ -11,12 +11,14 @@
             "task_time": "09:00",
             "task_name": "Новое задание",
             "comment": "Взять коньки"
+        },
+        {
+            "task_first_date": "23.03.2021",
+            "task_time": "10:00",
+            "task_name": "Another new task",
+            "comment": "Another cool comment"
         }
     ],
-    "birthdays": [
-
-    ],
-    "onetimers": [
-
-    ]
+    "birthdays": [],
+    "onetimers": []
 }
