@@ -3,7 +3,7 @@ import json
 
 def write_json(data, filename='calendar.json'):
     with open(filename, 'w') as f:
-        json.dump(data, f, ensure_ascii=False, indent=4)
+        json.dump(data, f, ensure_ascii=False)
 
 new_date = input('Date:\t')
 new_time = input('Time:\t')

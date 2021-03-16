@@ -12,7 +12,7 @@ field_players_parsed = jmespath.search(
     "points: points, plusminus: plusMinus}",
     field_players)
 
-# print(field_players_parsed)
+print(field_players_parsed)
 n = 1
 for index, item in zip(range(10), field_players_parsed):
     print(str(n) + ". " + item['name'] + ", " + item['team'] + ", " + item['position'] + ", " + str(
