@@ -47,7 +47,7 @@ with Image.open("pics/800.png") as im:
         draw.text((SCW / 2 - 70, START_Y_SCORES), line_away, font=def_font, fill=GREY, anchor="rm")
         draw.text((SCW / 2, START_Y_SCORES), line_score, font=def_font, fill=GREY, anchor="mm")
         if item['otstatus'] == 4:
-            draw.text((SCW / 2 + 30, START_Y_SCORES - 1 + 7), 'OT', font=machsmall, fill=GREY, anchor="lb")
+            draw.text((SCW / 2 + 29, START_Y_SCORES - 1 + 5), 'OT', font=machsmall, fill=GREY, anchor="lb")
         draw.text((SCW / 2 + 70, START_Y_SCORES), line_home, font=def_font, fill=GREY, anchor="lm")
 
         START_Y_SCORES = START_Y_SCORES + LINE_HEIGHT
