@@ -35,10 +35,10 @@ print(field_players_parsed)
 #SCORES########################################################
 #SCORES########################################################
 with Image.open("pics/stats.png") as im:
-    SCW = 800
-    SCH = 800
+    SCW = 1668
+    SCH = 2388
     LINE_HEIGHT = 65
-    START_Y_SCORES = 100
+    START_Y_SCORES = 200
     GREY = (220, 220, 220, 128)
     SHADOW = (50, 50, 50)
     boston = ImageFont.truetype('fonts/nhlboston.ttf', 24)
@@ -48,16 +48,18 @@ with Image.open("pics/stats.png") as im:
     machbig = ImageFont.truetype('fonts/mach.otf', 60)
     unreal = ImageFont.truetype('fonts/unreal.ttf', 50)
     ubuntu = ImageFont.truetype('fonts/Ubuntu-M.ttf', 50)
-    ubuntuс = ImageFont.truetype('fonts/Ubuntu-С.ttf', 50)
-    def_font = ubuntu
+    ubuntuс = ImageFont.truetype('fonts/ubuntuc.ttf', 50)
+    def_font = ubuntuс
     draw = ImageDraw.Draw(im)
-    draw.rectangle([(0, 40), (800, 120)], fill=(0, 0, 0, 228), outline=None)
-    draw.text((400, 80), 'РЕЗУЛЬТАТЫ ЗА ' + str(yesterday_rus), font=machbig, fill='white', anchor='mm')
+    draw.rectangle([(0, 40), (SCW, 120)], fill=(0, 0, 0, 228), outline=None)
+    draw.text((SCW/2, 80), 'РЕЗУЛЬТАТЫ НА ' + str(yesterday_rus), font=machbig, fill='white', anchor='mm')
     ###### FIELD PLAYERS DRAW
     START_Y_FIELDPLAYERS = START_Y_SCORES + 30
-    draw.text((SCW / 2, START_Y_FIELDPLAYERS), ' ^q ^~ ^| ^q ^p   ^t ^x    ', font=def_font, fill=0, anchor="mm")
-    draw.line((10, LINE_HEIGHT + START_Y_FIELDPLAYERS, SCW - 10, LINE_HEIGHT + START_Y_FIELDPLAYERS), fill=0, width=1)
+    draw.line((50, LINE_HEIGHT + START_Y_FIELDPLAYERS, SCW - 50, LINE_HEIGHT + START_Y_FIELDPLAYERS), fill=GREY, width=1)
+    draw.text((SCW / 2, START_Y_FIELDPLAYERS), 'БОМБАРДИРЫ ЛИГИ', font=machbig, fill=GREY, anchor="mm")
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT * 2
+    draw.line((50, START_Y_FIELDPLAYERS + LINE_HEIGHT, SCW - 50, START_Y_FIELDPLAYERS + LINE_HEIGHT), fill=GREY,
+              width=1)
     pos_num = 100
     pos_name = pos_num + 35
     pos_team = pos_name + 520  # 130
@@ -75,7 +77,6 @@ with Image.open("pics/stats.png") as im:
     draw.text((pos_assists, START_Y_FIELDPLAYERS), "Пас", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_points, START_Y_FIELDPLAYERS), "ОЧК", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_plusminus, START_Y_FIELDPLAYERS), "+/-", font=def_font, fill=GREY, anchor="rm")
-    draw.line((10, START_Y_FIELDPLAYERS + LINE_HEIGHT, SCW - 10, START_Y_FIELDPLAYERS + LINE_HEIGHT), fill=0, width=1)
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT * 2
     for index, item in zip(range(10), field_players_parsed):
         draw.text((pos_num, START_Y_FIELDPLAYERS), str(index + 1), font=def_font, fill=GREY, anchor="rm")
@@ -88,7 +89,12 @@ with Image.open("pics/stats.png") as im:
         draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
 
-    START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS + LINE_HEIGHT
+    START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS + LINE_HEIGHT*2
+    draw.line((50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS, SCW - 50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS), fill=GREY, width=1)
+    draw.text((SCW / 2, START_Y_FIELDPLAYERS_RUS), 'БОМБАРДИРЫ ЛИГИ ИЗ РОССИИ', font=machbig, fill=GREY, anchor="mm")
+    START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT * 2
+    draw.line((50, START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT, SCW - 50, START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT), fill=GREY,
+              width=1)
     draw.text((pos_num, START_Y_FIELDPLAYERS_RUS), '#', font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), "Ком", font=def_font, fill=GREY, anchor="lm")
@@ -97,7 +103,6 @@ with Image.open("pics/stats.png") as im:
     draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), "Пас", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), "ОЧК", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), "+/-", font=def_font, fill=GREY, anchor="rm")
-    draw.line((10, START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT, SCW - 10, START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT), fill=0, width=1)
     START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT * 2
     for index, item in zip(range(10), field_players_rus_parsed):
         draw.text((pos_num, START_Y_FIELDPLAYERS_RUS), str(index + 1), font=def_font, fill=GREY, anchor="rm")
