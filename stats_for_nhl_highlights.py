@@ -22,7 +22,12 @@ field_players = requests.get(
 field_players_parsed = jmespath.search(
     "data[].{name: skaterFullName, team: teamAbbrevs, position: positionCode, goals: goals, assists: assists, points: points, plusminus: plusMinus}",
     field_players)
-
+#STATS#########################################################
+field_players_rus = requests.get(
+    "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+field_players_rus_parsed = jmespath.search(
+    "data[].{name: lastName, team: teamAbbrevs, goals: evGoals, assists: assists, points: evPoints, plusminus: plusMinus, gwg: gameWinningGoals, position: positionCode ,shots: shots,pointspg: pointsPerGame}",
+    field_players_rus)
 print(field_players_parsed)
 #STATS_RUS#####################################################
 #GOALIES#######################################################
@@ -32,7 +37,7 @@ with Image.open("pics/stats.png") as im:
     SCW = 800
     SCH = 800
     LINE_HEIGHT = 65
-    START_Y_SCORES = 200
+    START_Y_SCORES = 100
     GREY = (220, 220, 220, 128)
     SHADOW = (50, 50, 50)
     boston = ImageFont.truetype('fonts/nhlboston.ttf', 24)
@@ -81,7 +86,28 @@ with Image.open("pics/stats.png") as im:
         draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
 
-    START_Y_SCORES = START_Y_SCORES + LINE_HEIGHT
+    START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS + LINE_HEIGHT
+    draw.text((pos_num, START_Y_FIELDPLAYERS_RUS), '#', font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), "Имя", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), "Ком", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_position, START_Y_FIELDPLAYERS_RUS), "Поз", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), "Гол", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), "Пас", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), "ОЧК", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), "+/-", font=def_font, fill=GREY, anchor="rm")
+    draw.line((10, START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT, SCW - 10, START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT), fill=0, width=1)
+    START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT * 2
+    for index, item in zip(range(10), field_players_rus_parsed):
+        draw.text((pos_num, START_Y_FIELDPLAYERS_RUS), str(index + 1), font=def_font, fill=GREY, anchor="rm")
+        draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), item['name'], font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), item['team'], font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_position, START_Y_FIELDPLAYERS_RUS), item['position'], font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), str(item['goals']), font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), str(item['assists']), font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), str(item['points']), font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
+        START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT
+
     # write to stdout
-    print(last_games_parsed)
+    print(field_players_rus_parsed)
     im.show()
