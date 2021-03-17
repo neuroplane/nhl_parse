@@ -1,3 +1,4 @@
+import json
 import os
 import sys
 
@@ -47,6 +48,7 @@ with Image.open("pics/stats.png") as im:
     machbig = ImageFont.truetype('fonts/mach.otf', 60)
     unreal = ImageFont.truetype('fonts/unreal.ttf', 50)
     ubuntu = ImageFont.truetype('fonts/Ubuntu-M.ttf', 50)
+    ubuntuс = ImageFont.truetype('fonts/Ubuntu-С.ttf', 50)
     def_font = ubuntu
     draw = ImageDraw.Draw(im)
     draw.rectangle([(0, 40), (800, 120)], fill=(0, 0, 0, 228), outline=None)
@@ -109,5 +111,5 @@ with Image.open("pics/stats.png") as im:
         START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT
 
     # write to stdout
-    print(field_players_rus_parsed)
+    print(json.dumps(field_players_rus_parsed, ensure_ascii=False, indent=2))
     im.show()
