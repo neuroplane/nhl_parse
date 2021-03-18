@@ -39,7 +39,7 @@ with Image.open("pics/stats.png") as im:
     SCH = 2388
     LINE_HEIGHT = 63
     LINE_H = 60
-    START_Y_SCORES = 200
+    START_Y_SCORES = 100
     GREY = (220, 220, 220, 128)
     SHADOW = (50, 50, 50)
     boston = ImageFont.truetype('fonts/nhlboston.ttf', 24)
@@ -52,12 +52,12 @@ with Image.open("pics/stats.png") as im:
     ubuntuс = ImageFont.truetype('fonts/ubuntuc.ttf', 65)
     def_font = ubuntu
     draw = ImageDraw.Draw(im)
-    draw.rectangle([(0, 40), (SCW, 120)], fill=(0, 0, 0, 228), outline=None)
-    draw.text((SCW/2, 80), 'РЕЗУЛЬТАТЫ НА ' + str(yesterday_rus), font=machbig, fill='white', anchor='mm')
+    #draw.rectangle([(0, 40), (SCW, 120)], fill=(0, 0, 0, 228), outline=None)
+    #draw.text((SCW/2, 80), 'РЕЗУЛЬТАТЫ НА ' + str(yesterday_rus), font=machbig, fill='white', anchor='mm')
     ###### FIELD PLAYERS DRAW
     START_Y_FIELDPLAYERS = START_Y_SCORES + LINE_HEIGHT
     draw.line((50,  START_Y_FIELDPLAYERS+LINE_HEIGHT, SCW - 50, START_Y_FIELDPLAYERS+LINE_HEIGHT), fill=GREY, width=1)
-    draw.text((SCW / 2, START_Y_FIELDPLAYERS), 'БОМБАРДИРЫ ЛИГИ', font=machbig, fill=GREY, anchor="mm")
+    draw.text((SCW / 2, START_Y_FIELDPLAYERS-50), 'БОМБАРДИРЫ ЛИГИ', font=machbig, fill=GREY, anchor="mm")
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.line((50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2, SCW - 50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2), fill=GREY,
               width=1)
