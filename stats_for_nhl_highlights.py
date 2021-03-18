@@ -34,7 +34,8 @@ print(field_players_parsed)
 #GOALIES#######################################################
 #SCORES########################################################
 #SCORES########################################################
-with Image.open("pics/stats.png") as im:
+#with Image.open("pics/stats.png") as im:
+with Image.open("pics/stanley.png") as im:
     SCW = 1668
     SCH = 2388
     LINE_HEIGHT = 63
@@ -57,7 +58,7 @@ with Image.open("pics/stats.png") as im:
     ###### FIELD PLAYERS DRAW
     START_Y_FIELDPLAYERS = START_Y_SCORES + LINE_HEIGHT
     draw.line((50,  START_Y_FIELDPLAYERS+LINE_HEIGHT, SCW - 50, START_Y_FIELDPLAYERS+LINE_HEIGHT), fill=GREY, width=1)
-    draw.text((SCW / 2, START_Y_FIELDPLAYERS-50), 'БОМБАРДИРЫ ЛИГИ', font=machbig, fill=GREY, anchor="mm")
+    draw.text((SCW / 2, START_Y_FIELDPLAYERS-30), 'БОМБАРДИРЫ ЛИГИ', font=machbig, fill=GREY, anchor="mm")
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.line((50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2, SCW - 50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2), fill=GREY,
               width=1)
@@ -65,18 +66,18 @@ with Image.open("pics/stats.png") as im:
     pos_position = pos_num + 80
     pos_name = pos_position + 100
     pos_team = pos_name + 700
-    pos_goals = pos_team + 300  # 180
+    pos_goals = pos_team + 350  # 180
     #pos_assists = pos_goals + 190  # 210
-    pos_points = pos_goals + 250  # 240
+    pos_points = pos_goals + 200  # 240
     pos_plusminus = pos_points + 250  # 270
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.text((pos_num, START_Y_FIELDPLAYERS), '#', font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_name, START_Y_FIELDPLAYERS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS), "Ком", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_position, START_Y_FIELDPLAYERS), "П", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_goals, START_Y_FIELDPLAYERS), "Г", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_goals, START_Y_FIELDPLAYERS), "Г", font=def_font, fill=GREY, anchor="rm")
     #draw.text((pos_assists, START_Y_FIELDPLAYERS), "П", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_points, START_Y_FIELDPLAYERS), "О", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_points, START_Y_FIELDPLAYERS), "О", font=def_font, fill=GREY, anchor="rm")
     #draw.text((pos_plusminus, START_Y_FIELDPLAYERS), "+/-", font=def_font, fill=GREY, anchor="rm")
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + 120
     for index, item in zip(range(10), field_players_parsed):
@@ -84,15 +85,15 @@ with Image.open("pics/stats.png") as im:
         draw.text((pos_name, START_Y_FIELDPLAYERS), item['name'], font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_team, START_Y_FIELDPLAYERS), item['team'], font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_position, START_Y_FIELDPLAYERS), item['position'], font=def_font, fill=GREY, anchor="lm")
-        draw.text((pos_goals, START_Y_FIELDPLAYERS), str(item['goals']), font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_goals, START_Y_FIELDPLAYERS), str(item['goals']), font=def_font, fill=GREY, anchor="rm")
         #draw.text((pos_assists, START_Y_FIELDPLAYERS), str(item['assists']), font=def_font, fill=GREY, anchor="lm")
-        draw.text((pos_points, START_Y_FIELDPLAYERS), str(item['points']), font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_points, START_Y_FIELDPLAYERS), str(item['points']), font=def_font, fill=GREY, anchor="rm")
         #draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
 
-    START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS + LINE_HEIGHT*2
+    START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS + LINE_HEIGHT*3
     draw.line((50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS, SCW - 50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS), fill=GREY, width=1)
-    draw.text((SCW / 2, START_Y_FIELDPLAYERS_RUS), 'БОМБАРДИРЫ ЛИГИ ИЗ РОССИИ', font=machbig, fill=GREY, anchor="mm")
+    draw.text((SCW / 2, START_Y_FIELDPLAYERS_RUS-30), 'БОМБАРДИРЫ ЛИГИ ИЗ РОССИИ', font=machbig, fill=GREY, anchor="mm")
     START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT * 2
     draw.line((50, START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT, SCW - 50, START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT), fill=GREY,
               width=1)
@@ -100,7 +101,7 @@ with Image.open("pics/stats.png") as im:
     draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), "Ком", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_position, START_Y_FIELDPLAYERS_RUS), "П", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), "Г", font=def_font, fill=GREY, anchor="lm")
+    draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), "Г", font=def_font, fill=GREY, anchor="rm")
     #draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), "Пас", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), "О", font=def_font, fill=GREY, anchor="lm")
     #draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), "+/-", font=def_font, fill=GREY, anchor="rm")
@@ -110,7 +111,7 @@ with Image.open("pics/stats.png") as im:
         draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), item['name'], font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), item['team'], font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_position, START_Y_FIELDPLAYERS_RUS), item['position'], font=def_font, fill=GREY, anchor="lm")
-        draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), str(item['goals']), font=def_font, fill=GREY, anchor="lm")
+        draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), str(item['goals']), font=def_font, fill=GREY, anchor="rm")
         #draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), str(item['assists']), font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), str(item['points']), font=def_font, fill=GREY, anchor="lm")
         #draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
