@@ -62,10 +62,10 @@ with Image.open("pics/stats.png") as im:
     draw.line((50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2, SCW - 50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2), fill=GREY,
               width=1)
     pos_num = 100
-    pos_position = pos_num + 50
-    pos_name = pos_position + 50
-    pos_team = pos_name + 50
-    pos_goals = pos_team + 250  # 180
+    pos_position = pos_num + 80
+    pos_name = pos_position + 100
+    pos_team = pos_name + 700
+    pos_goals = pos_team + 300  # 180
     #pos_assists = pos_goals + 190  # 210
     pos_points = pos_goals + 250  # 240
     pos_plusminus = pos_points + 250  # 270
