@@ -97,7 +97,7 @@ with Image.open("pics/highlights.jpg") as im:
         #draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
         toi = str(round(item['toi']*item['gp']/item['goals']/60, 2))
-        print(item['name'] + " " + toi + ", индекс читера: " + str(round(item['ppg']/item['goals'], 2)))
+        print(item['name'] + ", минут/гол: " + toi + ", индекс читера: " + str(round(item['ppg']/item['goals'], 2)))
 
     START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS + LINE_HEIGHT*2
     draw.line((50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS, SCW - 50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS), fill=GREY, width=1)
@@ -131,3 +131,4 @@ with Image.open("pics/highlights.jpg") as im:
     out = im.resize(size)
     out.show()
     out.save('pics/out' + now_file + '.png')
+    print(last_games)
