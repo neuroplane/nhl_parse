@@ -1,7 +1,13 @@
 import jmespath
 import requests
 from datetime import datetime, timezone, timedelta
+import argparse
+import subprocess
 
+import os
+
+parser = argparse.ArgumentParser()
+parser.add_argument("input_url")
 now = datetime.today().strftime('%H:%M:%S')
 now_file = datetime.today().strftime('%H%M%S')
 now_date = datetime.today().strftime('%d.%m.%Y')
@@ -14,12 +20,18 @@ games_data = requests.get(
 games_data_parsed = jmespath.search(
     "dates[].games[].{title: content.media.epg[?title=='Extended Highlights']|[0].items|[0].title, hl_id: content.media.epg[?title=='Extended Highlights']|[0].items|[0].id, date: content.media.epg[?title=='Extended Highlights']|[0].items|[0].date, status: status. detailedState}",
     games_data)
+### YOUTUBE-DL SECTION ###
+ydl = 'youtube-dl ' + '$1 -o "~/highlights/$opdate/%(title)s.%(ext)s" --restrict-filenames -f HTTP_CLOUD_MOBILE-221 --no-check-certificate'
 
-print(games_data_parsed)
-n = 1
-for index, item in zip(range(10), games_data_parsed):
-    if (item['status'] == "Final"):
-        print(str(n) + ". " + item['title'] + ", https://www.nhl.com/video/c-" + item['hl_id'] + ", " + item['status'])
-        n = n + 1
+for item in games_data_parsed:
+    if item['status'] == "Final":
+        #subprocess.call(['~/highlights.sh ' + "https://www.nhl.com/video/c-" + item['hl_id']], shell=True)
+        #subprocess.call(['youtube-dl ' + "https://www.nhl.com/video/c-" + item["hl_id"] + ' -o "~/highlights/' + yesterday + '/%(title)s.%(ext)s" --restrict-filenames -f HTTP_CLOUD_MOBILE-221 --no-check-certificate'], shell=True)
+        #filename = subprocess.call(['ls', '-t', '~/highlights/' + yesterday, '|','head',' -1'])
+        filename = subprocess.call(['ls -t ~/highlights/' + yesterday + ' | head -1'], shell=True)
+        #print(filename)
+        #subprocess.call(['ffmpeg -ss 0:0:1.2 -i ~/highlights/' + yesterday + '/$s -filter:v fps=fps=30 -maxrate 2000k -bufsize 1835k ~/highlights/$opdate/$filename-HIGHLIGHTS.mp4'])
     else:
-        print(str(n) + ". " + item['status'])
+        print(item['status'])
+
+
