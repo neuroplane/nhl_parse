@@ -3,6 +3,7 @@ import requests
 from datetime import datetime, timezone, timedelta
 import argparse
 import subprocess
+from os.path import expanduser
 
 import os
 
@@ -25,13 +26,6 @@ ydl = 'youtube-dl ' + '$1 -o "~/highlights/$opdate/%(title)s.%(ext)s" --restrict
 
 for item in games_data_parsed:
     if item['status'] == "Final":
-        #subprocess.call(['~/highlights.sh ' + "https://www.nhl.com/video/c-" + item['hl_id']], shell=True)
-        #subprocess.call(['youtube-dl ' + "https://www.nhl.com/video/c-" + item["hl_id"] + ' -o "~/highlights/' + yesterday + '/%(title)s.%(ext)s" --restrict-filenames -f HTTP_CLOUD_MOBILE-221 --no-check-certificate'], shell=True)
-        #filename = subprocess.call(['ls', '-t', '~/highlights/' + yesterday, '|','head',' -1'])
-        filename = subprocess.call(['ls -t ~/highlights/' + yesterday + ' | head -1'], shell=True)
-        #print(filename)
-        #subprocess.call(['ffmpeg -ss 0:0:1.2 -i ~/highlights/' + yesterday + '/$s -filter:v fps=fps=30 -maxrate 2000k -bufsize 1835k ~/highlights/$opdate/$filename-HIGHLIGHTS.mp4'])
+        subprocess.call(['~/highlights.sh ' + "https://www.nhl.com/video/c-" + item['hl_id']], shell=True)
     else:
         print(item['status'])
-
-
