@@ -13,19 +13,25 @@ now = datetime.today().strftime('%H:%M:%S')
 now_file = datetime.today().strftime('%H%M%S')
 now_date = datetime.today().strftime('%d.%m.%Y')
 yesterday = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
+today = datetime.today().strftime('%Y-%m-%d')
 yesterday_rus = (datetime.today() - timedelta(days=1)).strftime('%d.%m.%Y')
 
-games_data = requests.get(
-    "https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + yesterday + "&endDate=" + yesterday + "&hydrate=team,linescore,broadcasts(all),game(content(media(epg)),seriesSummary),radioBroadcasts,metadata").json()
+request_url = "https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + yesterday + "&endDate=" + today + "&hydrate=team,linescore,broadcasts(all),game(content(media(epg)),seriesSummary),radioBroadcasts,metadata"
+print(request_url)
+games_data = requests.get(request_url).json()
+
+games_data_existanse = jmespath.search(
+    "dates[].games[].{away: teams.away.team.abbreviation, home: teams.home.team.abbreviation, title: content.media.epg[?title=='Extended Highlights']|[0].items|[0].title, hl_id: content.media.epg[?title=='Extended Highlights']|[0].items|[0].id, date: content.media.epg[?title=='Extended Highlights']|[0].items|[0].date, status: status. detailedState}",
+    games_data)
 
 games_data_parsed = jmespath.search(
-    "dates[].games[].{title: content.media.epg[?title=='Extended Highlights']|[0].items|[0].title, hl_id: content.media.epg[?title=='Extended Highlights']|[0].items|[0].id, date: content.media.epg[?title=='Extended Highlights']|[0].items|[0].date, status: status. detailedState}",
+    "dates[].games[].{away: teams.away.team.abbreviation, home: teams.home.team.abbreviation, title: content.media.epg[?title=='Extended Highlights']|[0].items|[0].title, hl_id: content.media.epg[?title=='Extended Highlights']|[0].items|[0].id, date: content.media.epg[?title=='Extended Highlights']|[0].items|[0].date, status: status. detailedState}",
     games_data)
-### YOUTUBE-DL SECTION ###
-ydl = 'youtube-dl ' + '$1 -o "~/highlights/$opdate/%(title)s.%(ext)s" --restrict-filenames -f HTTP_CLOUD_MOBILE-221 --no-check-certificate'
 
 for item in games_data_parsed:
-    if item['status'] == "Final":
-        subprocess.call(['~/highlights.sh ' + "https://www.nhl.com/video/c-" + item['hl_id']], shell=True)
+    if item['hl_id']:
+        #subprocess.call(['~/highlights.sh ' + "https://www.nhl.com/video/c-" + item['hl_id']], shell=True)
+        print(item['title'] + ", " + item['status'])
     else:
-        print(item['status'])
+        print("! " + item['away'] + " @ " + item['home'] + ", " + item['status'] + str(len(games_data_parsed)))
+        break
