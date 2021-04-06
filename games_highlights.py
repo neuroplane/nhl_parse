@@ -31,6 +31,7 @@ games_data_parsed = jmespath.search(
 for item in games_data_parsed:
     if item['hl_id']:
         #subprocess.call(['~/highlights.sh ' + "https://www.nhl.com/video/c-" + item['hl_id']], shell=True)
+        subprocess.call(['~/highlights/' + today + '.list << ' + "https://www.nhl.com/video/c-" + item['hl_id']], shell=True)
         print(item['title'] + ", " + item['status'] + " https://www.nhl.com/video/c-" + item['hl_id'])
     else:
         print("! " + item['away'] + " @ " + item['home'] + ", " + item['status'] + str(len(games_data_parsed)))
