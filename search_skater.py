@@ -19,7 +19,7 @@ yesterday_rus = (datetime.today() - timedelta(days=1)).strftime('%d.%m.%Y')
 #last_games_parsed = jmespath.search(
 #    "dates[].games[].{otstatus: linescore. currentPeriod, away: {team: teams.away.team.teamName, loc: teams.away.team.locationName, score: teams.away.score},home:{team: teams.home.team.teamName, loc: teams.home.team.locationName, score: teams.home.score}}",
 #    last_games)
-first_skater = input('First skater search\t')
+first_skater = input('First skater search:\t')
 second_skater = input('Second player search:\t')
 #STATS#########################################################
 first_skater_json = requests.get(
