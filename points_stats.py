@@ -130,5 +130,5 @@ with Image.open("pics/highlights.jpg") as im:
     size = (167*4, 239*4)
     out = im.resize(size)
     out.show()
-    out.save('pics/out' + now_file + '.png')
+    out.save('rendered/out' + now_file + '_bombardiers.png')
     print(last_games)
