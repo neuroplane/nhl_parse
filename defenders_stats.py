@@ -32,11 +32,7 @@ field_players_rus_parsed = jmespath.search(
     "data[].{name: skaterFullName, team: teamAbbrevs, goals: goals, assists: assists, points: points, plusminus: plusMinus, gwg: gameWinningGoals, position: positionCode ,shots: shots,pointspg: pointsPerGame}",
     field_players_rus)
 print(field_players_rus_parsed)
-#STATS_RUS#####################################################
-#GOALIES#######################################################
-#SCORES########################################################
-#SCORES########################################################
-#with Image.open("pics/stats.png") as im:
+
 with Image.open("pics/highlights.jpg") as im:
     SCW, SCH = im.size
     print(im.size)
