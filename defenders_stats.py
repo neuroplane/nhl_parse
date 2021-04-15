@@ -13,25 +13,29 @@ now_file = datetime.today().strftime('%H%M%S')
 now_date = datetime.today().strftime('%d.%m.%Y')
 yesterday = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
 yesterday_rus = (datetime.today() - timedelta(days=1)).strftime('%d.%m.%Y')
-#SCORES#########################################################
-last_games = requests.get(
-    "https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + yesterday + "&endDate=" + yesterday + "&hydrate=team,linescore,broadcasts(all),tickets,game(content(media(epg)),seriesSummary),radioBroadcasts,metadata,seriesSummary(series)&site=ru_nhl&teamId=&gameType=&timecode=").json()
-last_games_parsed = jmespath.search(
-    "dates[].games[].{otstatus: linescore. currentPeriod, away: {team: teams.away.team.teamName, loc: teams.away.team.locationName, score: teams.away.score},home:{team: teams.home.team.teamName, loc: teams.home.team.locationName, score: teams.home.score}}",
-    last_games)
 #STATS#########################################################
 field_players = requests.get(
     "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
 field_players_parsed = jmespath.search(
-    "data[].{name: skaterFullName, ppg: ppGoals, gp: gamesPlayed, toi: timeOnIcePerGame, team: teamAbbrevs, position: positionCode, goals: goals, assists: assists, points: points, plusminus: plusMinus}",
+    "data[].{playerId: playerId, name: skaterFullName, ppg: ppGoals, gp: gamesPlayed, toi: timeOnIcePerGame, team: teamAbbrevs, position: positionCode, goals: goals, assists: assists, points: points, plusminus: plusMinus}",
     field_players)
 #STATS#########################################################
 field_players_rus = requests.get(
     "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1%20and%20gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20nationalityCode=%22RUS%22%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
 field_players_rus_parsed = jmespath.search(
-    "data[].{name: skaterFullName, team: teamAbbrevs, goals: goals, assists: assists, points: points, plusminus: plusMinus, gwg: gameWinningGoals, position: positionCode ,shots: shots,pointspg: pointsPerGame}",
+    "data[].{playerId: playerId, name: skaterFullName, team: teamAbbrevs, goals: goals, assists: assists, points: points, plusminus: plusMinus, gwg: gameWinningGoals, position: positionCode ,shots: shots,pointspg: pointsPerGame}",
     field_players_rus)
-print(field_players_rus_parsed)
+defs = requests.get(
+    "https://api.nhle.com/stats/rest/ru/skater/realtime?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22missedShots%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
+).json()
+defs_parsed = jmespath.search("data[].{blockedShots: blockedShots, pid: playerId, name: skaterFullName, hits:hits, bs: blockedShots}", defs
+)
+defs_rus = requests.get(
+    "https://api.nhle.com/stats/rest/ru/skater/realtime?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22missedShots%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20positionCode%3D%22D%22%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
+).json()
+defs_rus_parsed = jmespath.search("data[].{blockedShots: blockedShots, pid: playerId, name: skaterFullName, hits:hits, bs: blockedShots}", defs_rus
+)
+print(defs_rus)
 
 with Image.open("pics/highlights.jpg") as im:
     SCW, SCH = im.size
@@ -64,36 +68,41 @@ with Image.open("pics/highlights.jpg") as im:
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.line((50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2, SCW - 50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2), fill=GREY,
               width=1)
-    pos_num = round(SCW*0.07)
-    pos_position = round(SCW * 0.12)
-    pos_name = round(SCW * 0.12)
-    pos_team = round(SCW * 0.55)
-    pos_goals = round(SCW * 0.75)  # 180
-    pos_assists = round(SCW * 0.85)  # 210
-    pos_points = round(SCW * 0.96)  # 240
-    pos_plusminus = pos_points + 250  # 270
+    pos_num = round(SCW*0.06)
+    pos_position = round(SCW * 0.9)
+    pos_name = round(SCW * 0.10)
+    pos_team = round(SCW * 0.45)
+    pos_goals = round(SCW * 0.60)  # 180
+    pos_assists = round(SCW * 0.68)  # 210
+    pos_points = round(SCW * 0.77)  # 240
+    pos_hits = round(SCW * 0.86)
+    pos_plusminus = round(SCW * 0.95)  # 270
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.text((pos_num, START_Y_FIELDPLAYERS), '#', font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_name, START_Y_FIELDPLAYERS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS), "Ком", font=def_font, fill=GREY, anchor="lm")
     #draw.text((pos_position, START_Y_FIELDPLAYERS), "П", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_goals, START_Y_FIELDPLAYERS), "Г", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_goals, START_Y_FIELDPLAYERS), "Б", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_assists, START_Y_FIELDPLAYERS), "П", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_points, START_Y_FIELDPLAYERS), "О", font=def_font, fill=GREY, anchor="rm")
-    #draw.text((pos_plusminus, START_Y_FIELDPLAYERS), "+/-", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_hits, START_Y_FIELDPLAYERS), "Х", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_plusminus, START_Y_FIELDPLAYERS), "+/-", font=def_font, fill=GREY, anchor="rm")
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT*2
     for index, item in zip(range(10), field_players_parsed):
         draw.text((pos_num, START_Y_FIELDPLAYERS), str(index + 1), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_name, START_Y_FIELDPLAYERS), item['name'], font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_team, START_Y_FIELDPLAYERS), item['team'], font=def_font, fill=GREY, anchor="lm")
         #draw.text((pos_position, START_Y_FIELDPLAYERS), item['position'], font=def_font, fill=GREY, anchor="lm")
-        draw.text((pos_goals, START_Y_FIELDPLAYERS), str(item['goals']), font=def_font, fill=GREY, anchor="rm")
+        #draw.text((pos_goals, START_Y_FIELDPLAYERS), str(item['goals']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_assists, START_Y_FIELDPLAYERS), str(item['assists']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_points, START_Y_FIELDPLAYERS), str(item['points']), font=def_font, fill=GREY, anchor="rm")
-        #draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
+        for def_hits in defs_parsed:
+            if def_hits['pid'] == item['playerId']:
+                draw.text((pos_hits, START_Y_FIELDPLAYERS), str(def_hits['hits']), font=def_font, fill=GREY,
+                          anchor="rm")
+                draw.text((pos_goals, START_Y_FIELDPLAYERS), str(def_hits['blockedShots']), font=def_font, fill=GREY, anchor="rm")
+        draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
-        #toi = str(round(item['toi']*item['gp']/item['goals']/60, 2))
-        #print(item['name'] + ", минут/гол: " + toi + ", индекс читера: " + str(round(item['ppg']/item['goals'], 2)))
 
     START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS + LINE_HEIGHT*2
     draw.line((50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS, SCW - 50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS), fill=GREY, width=1)
@@ -105,10 +114,11 @@ with Image.open("pics/highlights.jpg") as im:
     draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), "Ком", font=def_font, fill=GREY, anchor="lm")
     #draw.text((pos_position, START_Y_FIELDPLAYERS_RUS), "П", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), "Г", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), "Б", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), "П", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), "О", font=def_font, fill=GREY, anchor="rm")
-    #draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), "+/-", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_hits, START_Y_FIELDPLAYERS_RUS), "Х", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), "+/-", font=def_font, fill=GREY, anchor="rm")
     START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT * 2
     for index, item in zip(range(10), field_players_rus_parsed):
         if (item['name'] == 'Artem Zub'):
@@ -121,10 +131,16 @@ with Image.open("pics/highlights.jpg") as im:
         draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), item['name'], font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), item['team'], font=def_font, fill=GREY, anchor="lm")
         #draw.text((pos_position, START_Y_FIELDPLAYERS_RUS), item['position'], font=def_font, fill=GREY, anchor="lm")
-        draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), str(item['goals']), font=def_font, fill=GREY, anchor="rm")
+        #draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), str(item['goals']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), str(item['assists']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), str(item['points']), font=def_font, fill=GREY, anchor="rm")
-        #draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
+        for def_hits in defs_rus_parsed:
+            if def_hits['pid'] == item['playerId']:
+                draw.text((pos_hits, START_Y_FIELDPLAYERS_RUS), str(def_hits['hits']), font=def_font, fill=GREY,
+                          anchor="rm")
+                draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), str(def_hits['blockedShots']), font=def_font, fill=GREY,
+                          anchor="rm")
+        draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT
     draw.text((70, SCH-60), str(now_date), font=kroftsmansm, fill=GREY, anchor="lb")
     # write to stdout
@@ -133,4 +149,3 @@ with Image.open("pics/highlights.jpg") as im:
     out = im.resize(size)
     out.show()
     out.save('rendered/out' + now_file + '_defenders.png')
-    print(last_games)
