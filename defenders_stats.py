@@ -68,21 +68,23 @@ with Image.open("pics/highlights.jpg") as im:
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.line((50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2, SCW - 50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2), fill=GREY,
               width=1)
+    ### COORDINATES
     pos_num = round(SCW*0.06)
     pos_position = round(SCW * 0.9)
     pos_name = round(SCW * 0.10)
     pos_team = round(SCW * 0.45)
-    pos_goals = round(SCW * 0.60)  # 180
+    ##############
+    pos_blocks = round(SCW * 0.77)  # BLOCKS
     pos_assists = round(SCW * 0.68)  # 210
-    pos_points = round(SCW * 0.77)  # 240
+    pos_points = round(SCW * 0.60)  # 240
     pos_hits = round(SCW * 0.86)
     pos_plusminus = round(SCW * 0.95)  # 270
+    ##############
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.text((pos_num, START_Y_FIELDPLAYERS), '#', font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_name, START_Y_FIELDPLAYERS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS), "Ком", font=def_font, fill=GREY, anchor="lm")
-    #draw.text((pos_position, START_Y_FIELDPLAYERS), "П", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_goals, START_Y_FIELDPLAYERS), "Б", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_blocks, START_Y_FIELDPLAYERS), "Б", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_assists, START_Y_FIELDPLAYERS), "П", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_points, START_Y_FIELDPLAYERS), "О", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_hits, START_Y_FIELDPLAYERS), "Х", font=def_font, fill=GREY, anchor="rm")
@@ -92,15 +94,13 @@ with Image.open("pics/highlights.jpg") as im:
         draw.text((pos_num, START_Y_FIELDPLAYERS), str(index + 1), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_name, START_Y_FIELDPLAYERS), item['name'], font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_team, START_Y_FIELDPLAYERS), item['team'], font=def_font, fill=GREY, anchor="lm")
-        #draw.text((pos_position, START_Y_FIELDPLAYERS), item['position'], font=def_font, fill=GREY, anchor="lm")
-        #draw.text((pos_goals, START_Y_FIELDPLAYERS), str(item['goals']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_assists, START_Y_FIELDPLAYERS), str(item['assists']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_points, START_Y_FIELDPLAYERS), str(item['points']), font=def_font, fill=GREY, anchor="rm")
         for def_hits in defs_parsed:
             if def_hits['pid'] == item['playerId']:
                 draw.text((pos_hits, START_Y_FIELDPLAYERS), str(def_hits['hits']), font=def_font, fill=GREY,
                           anchor="rm")
-                draw.text((pos_goals, START_Y_FIELDPLAYERS), str(def_hits['blockedShots']), font=def_font, fill=GREY, anchor="rm")
+                draw.text((pos_blocks, START_Y_FIELDPLAYERS), str(def_hits['blockedShots']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
 
@@ -113,8 +113,7 @@ with Image.open("pics/highlights.jpg") as im:
     draw.text((pos_num, START_Y_FIELDPLAYERS_RUS), '#', font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), "Ком", font=def_font, fill=GREY, anchor="lm")
-    #draw.text((pos_position, START_Y_FIELDPLAYERS_RUS), "П", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), "Б", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_blocks, START_Y_FIELDPLAYERS_RUS), "Б", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), "П", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), "О", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_hits, START_Y_FIELDPLAYERS_RUS), "Х", font=def_font, fill=GREY, anchor="rm")
@@ -130,21 +129,17 @@ with Image.open("pics/highlights.jpg") as im:
         draw.text((pos_num, START_Y_FIELDPLAYERS_RUS), str(index + 1), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), item['name'], font=def_font, fill=GREY, anchor="lm")
         draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), item['team'], font=def_font, fill=GREY, anchor="lm")
-        #draw.text((pos_position, START_Y_FIELDPLAYERS_RUS), item['position'], font=def_font, fill=GREY, anchor="lm")
-        #draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), str(item['goals']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), str(item['assists']), font=def_font, fill=GREY, anchor="rm")
         draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), str(item['points']), font=def_font, fill=GREY, anchor="rm")
         for def_hits in defs_rus_parsed:
             if def_hits['pid'] == item['playerId']:
                 draw.text((pos_hits, START_Y_FIELDPLAYERS_RUS), str(def_hits['hits']), font=def_font, fill=GREY,
                           anchor="rm")
-                draw.text((pos_goals, START_Y_FIELDPLAYERS_RUS), str(def_hits['blockedShots']), font=def_font, fill=GREY,
+                draw.text((pos_blocks, START_Y_FIELDPLAYERS_RUS), str(def_hits['blockedShots']), font=def_font, fill=GREY,
                           anchor="rm")
         draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT
     draw.text((70, SCH-60), str(now_date), font=kroftsmansm, fill=GREY, anchor="lb")
-    # write to stdout
-    #print(json.dumps(field_players_rus_parsed, ensure_ascii=False, indent=2))
     size = (167*4, 239*4)
     out = im.resize(size)
     out.show()
