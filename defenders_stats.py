@@ -28,12 +28,12 @@ field_players_rus_parsed = jmespath.search(
 defs = requests.get(
     "https://api.nhle.com/stats/rest/ru/skater/realtime?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22missedShots%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
 ).json()
-defs_parsed = jmespath.search("data[].{blockedShots: blockedShots, pid: playerId, name: skaterFullName, hits:hits, bs: blockedShots}", defs
+defs_parsed = jmespath.search("data[].{takeaways: takeaways, blockedShots: blockedShots, pid: playerId, name: skaterFullName, hits:hits, bs: blockedShots}", defs
 )
 defs_rus = requests.get(
     "https://api.nhle.com/stats/rest/ru/skater/realtime?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22missedShots%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20positionCode%3D%22D%22%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
 ).json()
-defs_rus_parsed = jmespath.search("data[].{blockedShots: blockedShots, pid: playerId, name: skaterFullName, hits:hits, bs: blockedShots}", defs_rus
+defs_rus_parsed = jmespath.search("data[].{takeaways: takeaways, blockedShots: blockedShots, pid: playerId, name: skaterFullName, hits:hits, bs: blockedShots}", defs_rus
 )
 print(defs_rus)
 
@@ -53,7 +53,7 @@ with Image.open("pics/highlights.jpg") as im:
     machsmall = ImageFont.truetype('fonts/mach.otf', 25)
     machbig = ImageFont.truetype('fonts/mach.otf', 140)
     unreal = ImageFont.truetype('fonts/unreal.ttf', 50)
-    ubuntu = ImageFont.truetype('fonts/Ubuntu-M.ttf', 65)
+    ubuntu = ImageFont.truetype('fonts/Ubuntu-M.ttf', 60)
     ubuntuс = ImageFont.truetype('fonts/ubuntuc.ttf', 65)
     kroftsman = ImageFont.truetype('fonts/kroftsman.ttf', 150)
     kroftsmansm = ImageFont.truetype('fonts/kroftsman.ttf', 150)
@@ -72,22 +72,24 @@ with Image.open("pics/highlights.jpg") as im:
     pos_num = round(SCW*0.06)
     pos_position = round(SCW * 0.9)
     pos_name = round(SCW * 0.10)
-    pos_team = round(SCW * 0.45)
+    pos_team = round(SCW * 0.43)
     ##############
-    pos_blocks = round(SCW * 0.77)  # BLOCKS
-    pos_assists = round(SCW * 0.68)  # 210
-    pos_points = round(SCW * 0.60)  # 240
-    pos_hits = round(SCW * 0.86)
-    pos_plusminus = round(SCW * 0.95)  # 270
+    pos_points = round(SCW * 0.57)  #
+    pos_assists = round(SCW * 0.65)  # 210
+    pos_blocks = round(SCW * 0.73)  # BLOCKS
+    pos_hits = round(SCW * 0.81)
+    pos_takeaways = round(SCW * 0.89)
+    pos_plusminus = round(SCW * 0.97)  # 270
     ##############
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.text((pos_num, START_Y_FIELDPLAYERS), '#', font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_name, START_Y_FIELDPLAYERS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS), "Ком", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_blocks, START_Y_FIELDPLAYERS), "Б", font=def_font, fill=GREY, anchor="rm")
-    draw.text((pos_assists, START_Y_FIELDPLAYERS), "П", font=def_font, fill=GREY, anchor="rm")
-    draw.text((pos_points, START_Y_FIELDPLAYERS), "О", font=def_font, fill=GREY, anchor="rm")
-    draw.text((pos_hits, START_Y_FIELDPLAYERS), "Х", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_blocks, START_Y_FIELDPLAYERS), "Блк", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_assists, START_Y_FIELDPLAYERS), "Пас", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_points, START_Y_FIELDPLAYERS), "Очк", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_hits, START_Y_FIELDPLAYERS), "Хит", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_takeaways, START_Y_FIELDPLAYERS), "Отб", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_plusminus, START_Y_FIELDPLAYERS), "+/-", font=def_font, fill=GREY, anchor="rm")
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT*2
     for index, item in zip(range(10), field_players_parsed):
@@ -101,6 +103,8 @@ with Image.open("pics/highlights.jpg") as im:
                 draw.text((pos_hits, START_Y_FIELDPLAYERS), str(def_hits['hits']), font=def_font, fill=GREY,
                           anchor="rm")
                 draw.text((pos_blocks, START_Y_FIELDPLAYERS), str(def_hits['blockedShots']), font=def_font, fill=GREY, anchor="rm")
+                draw.text((pos_takeaways, START_Y_FIELDPLAYERS), str(def_hits['takeaways']), font=def_font, fill=GREY,
+                          anchor="rm")
         draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
 
@@ -113,10 +117,11 @@ with Image.open("pics/highlights.jpg") as im:
     draw.text((pos_num, START_Y_FIELDPLAYERS_RUS), '#', font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_name, START_Y_FIELDPLAYERS_RUS), "Имя", font=def_font, fill=GREY, anchor="lm")
     draw.text((pos_team, START_Y_FIELDPLAYERS_RUS), "Ком", font=def_font, fill=GREY, anchor="lm")
-    draw.text((pos_blocks, START_Y_FIELDPLAYERS_RUS), "Б", font=def_font, fill=GREY, anchor="rm")
-    draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), "П", font=def_font, fill=GREY, anchor="rm")
-    draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), "О", font=def_font, fill=GREY, anchor="rm")
-    draw.text((pos_hits, START_Y_FIELDPLAYERS_RUS), "Х", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_blocks, START_Y_FIELDPLAYERS_RUS), "Блк", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_assists, START_Y_FIELDPLAYERS_RUS), "Пас", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_points, START_Y_FIELDPLAYERS_RUS), "Очк", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_hits, START_Y_FIELDPLAYERS_RUS), "Хит", font=def_font, fill=GREY, anchor="rm")
+    draw.text((pos_takeaways, START_Y_FIELDPLAYERS_RUS), "Отб", font=def_font, fill=GREY, anchor="rm")
     draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), "+/-", font=def_font, fill=GREY, anchor="rm")
     START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT * 2
     for index, item in zip(range(10), field_players_rus_parsed):
@@ -136,6 +141,8 @@ with Image.open("pics/highlights.jpg") as im:
                 draw.text((pos_hits, START_Y_FIELDPLAYERS_RUS), str(def_hits['hits']), font=def_font, fill=GREY,
                           anchor="rm")
                 draw.text((pos_blocks, START_Y_FIELDPLAYERS_RUS), str(def_hits['blockedShots']), font=def_font, fill=GREY,
+                          anchor="rm")
+                draw.text((pos_takeaways, START_Y_FIELDPLAYERS_RUS), str(def_hits['takeaways']), font=def_font, fill=GREY,
                           anchor="rm")
         draw.text((pos_plusminus, START_Y_FIELDPLAYERS_RUS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS_RUS + LINE_HEIGHT
