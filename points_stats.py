@@ -14,23 +14,26 @@ now_date = datetime.today().strftime('%d.%m.%Y')
 yesterday = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
 yesterday_rus = (datetime.today() - timedelta(days=1)).strftime('%d.%m.%Y')
 #SCORES#########################################################
-last_games = requests.get(
-    "https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + yesterday + "&endDate=" + yesterday + "&hydrate=team,linescore,broadcasts(all),tickets,game(content(media(epg)),seriesSummary),radioBroadcasts,metadata,seriesSummary(series)&site=ru_nhl&teamId=&gameType=&timecode=").json()
-last_games_parsed = jmespath.search(
-    "dates[].games[].{otstatus: linescore. currentPeriod, away: {team: teams.away.team.teamName, loc: teams.away.team.locationName, score: teams.away.score},home:{team: teams.home.team.teamName, loc: teams.home.team.locationName, score: teams.home.score}}",
-    last_games)
+#last_games = requests.get("https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + yesterday + "&endDate=" + yesterday + "&hydrate=team,linescore,broadcasts(all),tickets,game(content(media(epg)),seriesSummary),radioBroadcasts,metadata,seriesSummary(series)&site=ru_nhl&teamId=&gameType=&timecode=").json()
+#last_games_parsed = jmespath.search("dates[].games[].{otstatus: linescore. currentPeriod, away: {team: teams.away.team.teamName, loc: teams.away.team.locationName, score: teams.away.score},home:{team: teams.home.team.teamName, loc: teams.home.team.locationName, score: teams.home.score}}",last_games)
 #STATS#########################################################
-field_players = requests.get(
-    "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+#field_players = requests.get("https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+field_players_playoffs = requests.get(
+    "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+
 field_players_parsed = jmespath.search(
     "data[].{name: skaterFullName, ppg: ppGoals, gp: gamesPlayed, toi: timeOnIcePerGame, team: teamAbbrevs, position: positionCode, goals: goals, assists: assists, points: points, plusminus: plusMinus}",
-    field_players)
+    field_players_playoffs)
+#https://api.nhle.com/stats/rest/en/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021
 #STATS#########################################################
 field_players_rus = requests.get(
     "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+field_players_rus_playoffs = requests.get(
+    "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
+).json()
 field_players_rus_parsed = jmespath.search(
     "data[].{name: lastName, team: teamAbbrevs, goals: goals, assists: assists, points: points, plusminus: plusMinus, gwg: gameWinningGoals, position: positionCode ,shots: shots,pointspg: pointsPerGame}",
-    field_players_rus)
+    field_players_rus_playoffs)
 print(field_players_parsed)
 #STATS_RUS#####################################################
 #GOALIES#######################################################
@@ -64,7 +67,7 @@ with Image.open("pics/highlights.jpg") as im:
     ###### FIELD PLAYERS DRAW
     START_Y_FIELDPLAYERS = START_Y_SCORES + LINE_HEIGHT
     draw.line((50,  START_Y_FIELDPLAYERS+LINE_HEIGHT, SCW - 50, START_Y_FIELDPLAYERS+LINE_HEIGHT), fill=GREY, width=1)
-    draw.text((SCW / 2, START_Y_FIELDPLAYERS-30), 'БОМБАРДИРЬ', font=kroftsman, fill=GREY, anchor="mm")
+    draw.text((SCW / 2, START_Y_FIELDPLAYERS-30), 'БОМБАРДИРЬ ПЛЕЙ-ОФФ', font=kroftsman, fill=GREY, anchor="mm")
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.line((50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2, SCW - 50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2), fill=GREY,
               width=1)
@@ -96,8 +99,8 @@ with Image.open("pics/highlights.jpg") as im:
         draw.text((pos_points, START_Y_FIELDPLAYERS), str(item['points']), font=def_font, fill=GREY, anchor="rm")
         #draw.text((pos_plusminus, START_Y_FIELDPLAYERS), str(item['plusminus']), font=def_font, fill=GREY, anchor="rm")
         START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
-        toi = str(round(item['toi']*item['gp']/item['goals']/60, 2))
-        print(item['name'] + ", минут/гол: " + toi + ", индекс читера: " + str(round(item['ppg']/item['goals'], 2)))
+        #toi = str(round(item['toi']*item['gp']/item['goals']/60, 2))
+        #print(item['name'] + ", минут/гол: " + toi + ", индекс читера: " + str(round(item['ppg']/item['goals'], 2)))
 
     START_Y_FIELDPLAYERS_RUS = START_Y_FIELDPLAYERS + LINE_HEIGHT*2
     draw.line((50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS, SCW - 50, LINE_HEIGHT + START_Y_FIELDPLAYERS_RUS), fill=GREY, width=1)

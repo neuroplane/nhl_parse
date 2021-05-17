@@ -24,7 +24,7 @@ def get_teams_stats():
     stats_penalties = requests.get("https://api.nhle.com/stats/rest/ru/team/penalties?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22penaltyMinutes%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
     stats_penalties_parsed = jmespath.search("data[].{teamFullName: teamFullName, penaltyMinutes: penaltyMinutes}", stats_penalties)
 
-    sorting_type = False
+    sorting_type = True
     stats_misc_parsed_hits_reduced = sorted(stats_misc_parsed, key=itemgetter('hits'), reverse=sorting_type)[:5]
     stats_misc_parsed_blocks_reduced = sorted(stats_misc_parsed, key=itemgetter('blockedShots'), reverse=sorting_type)[:5]
     stats_misc_parsed_missed_reduced = sorted(stats_misc_parsed, key=itemgetter('missedShots'), reverse=sorting_type)[:5]
@@ -67,7 +67,7 @@ def get_teams_stats():
         row_3_start = row_2_start + 600
         row_4_start = row_3_start + 600
         draw_start = START_Y_SCORES + LINE_HEIGHT
-        draw.text((SCW/2, row_1_start-280), 'НАИМЕНЫШИЕ ПОКАЗАТЕЛИ', font=kroftsman, fill=GREY, anchor="mm")
+        draw.text((SCW/2, row_1_start-280), 'НАИБОЛЬШИЕ ПОКАЗАТЕЛИ', font=kroftsman, fill=GREY, anchor="mm")
         draw.text((pos_column_1_center, row_1_start), 'ХИТЬ', font=kroftsmansm, fill=GREY, anchor="mm")
         draw.line((pos_column_1_start,  row_1_start+LINE_HEIGHT, pos_column_1_end, row_1_start+LINE_HEIGHT), fill=GREY, width=1)
         draw.text((pos_column_1_center, row_2_start), 'БЛОКИ', font=kroftsmansm, fill=GREY, anchor="mm")
