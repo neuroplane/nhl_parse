@@ -17,20 +17,19 @@ last_games = requests.get(
 last_games_parsed = jmespath.search(
     "dates[].games[].{gameType: gameType, otstatus: linescore.currentPeriod, away: {team: teams.away.team.teamName, loc: teams.away.team.locationName, score: teams.away.score},home:{team: teams.home.team.teamName, loc: teams.home.team.locationName, score: teams.home.score}, series: seriesSummary.seriesStatusShort}",
     last_games)
-print(last_games_parsed)
 
 with Image.open("pics/800.png") as im:
     SCW = 800
     SCH = 800
-    LINE_HEIGHT = 45
+    LINE_HEIGHT = 55
     START_Y_SCORES = 200
     GREY = (220, 220, 220, 128)
-    SHADOW = (50, 50, 50)
+    SHADOW = (20, 20, 20)
     boston = ImageFont.truetype('fonts/nhlboston.ttf', 24)
     robotocond = ImageFont.truetype('fonts/robotocond.ttf', 28)
-    mach = ImageFont.truetype('fonts/mach.otf', 40)
+    mach = ImageFont.truetype('fonts/mach.otf', 60)
     machsmall = ImageFont.truetype('fonts/mach.otf', 20)
-    machbig = ImageFont.truetype('fonts/mach.otf', 60)
+    machbig = ImageFont.truetype('fonts/mach.otf', 120)
     unreal = ImageFont.truetype('fonts/unreal.ttf', 60)
     def_font = mach
     draw = ImageDraw.Draw(im)
@@ -43,24 +42,26 @@ with Image.open("pics/800.png") as im:
         line_home = str.upper(item['home']['loc']) #+ "  " + str.upper(item['home']['team'])
         line_home_team = str.upper(item['home']['team'])
         series_status = str(item['series'])
+        offset = 100
+        shadow_offset = offset -3
         # print(w)
         # draw.rectangle((START_X,START_Y, 11, 11), fill = 0)
         ################################### SHADOW
-        draw.text((SCW / 2 - 140 - 1 , START_Y_SCORES-1), line_away, font=def_font, fill=SHADOW, anchor="rm")
-        draw.text((SCW / 2 - 140 - 1, START_Y_SCORES+LINE_HEIGHT - 1), line_away_name, font=def_font, fill=GREY, anchor="rm")
+        draw.text((SCW / 2 - shadow_offset, START_Y_SCORES-1), line_away, font=def_font, fill=SHADOW, anchor="rm")
+        draw.text((SCW / 2 - shadow_offset, START_Y_SCORES+LINE_HEIGHT - 1), line_away_name, font=def_font, fill=GREY, anchor="rm")
         draw.text((SCW / 2 - 1, START_Y_SCORES-1), line_score, font=def_font, fill=SHADOW, anchor="mm")
         if item['gameType'] == 'P':
-            draw.text((SCW / 2 - 1, START_Y_SCORES+LINE_HEIGHT - 1), series_status, font=machsmall, fill=GREY, anchor="mt")
-        draw.text((SCW / 2 + 140 - 1, START_Y_SCORES-1), line_home, font=def_font, fill=SHADOW, anchor="lm")
-        draw.text((SCW / 2 + 140 - 1, START_Y_SCORES + LINE_HEIGHT - 1), line_home_team, font=def_font, fill=GREY, anchor="lm")
+            draw.text((SCW / 2 - 3, START_Y_SCORES+LINE_HEIGHT - 1), series_status, font=machsmall, fill=GREY, anchor="mt")
+        draw.text((SCW / 2 + shadow_offset, START_Y_SCORES-1), line_home, font=def_font, fill=SHADOW, anchor="lm")
+        draw.text((SCW / 2 + shadow_offset, START_Y_SCORES + LINE_HEIGHT - 1), line_home_team, font=def_font, fill=GREY, anchor="lm")
         ################################### TEXT
-        draw.text((SCW / 2 - 140, START_Y_SCORES), line_away, font=def_font, fill=GREY, anchor="rm")
+        draw.text((SCW / 2 - offset, START_Y_SCORES), line_away, font=def_font, fill=GREY, anchor="rm")
         draw.text((SCW / 2, START_Y_SCORES), line_score, font=def_font, fill=GREY, anchor="mm")
         if item['otstatus'] == 4:
             draw.text(((SCW / 2, START_Y_SCORES+LINE_HEIGHT-10)), 'OT', font=machsmall, fill=GREY, anchor="mb")
         elif item['otstatus'] == 5:
             draw.text((SCW / 2 + 33, START_Y_SCORES - 1 + 5), 'SO', font=machsmall, fill=GREY, anchor="lb")
-        draw.text((SCW / 2 + 140, START_Y_SCORES), line_home, font=def_font, fill=GREY, anchor="lm")
+        draw.text((SCW / 2 + offset, START_Y_SCORES), line_home, font=def_font, fill=GREY, anchor="lm")
 
         START_Y_SCORES = START_Y_SCORES + LINE_HEIGHT*3
     # write to stdout

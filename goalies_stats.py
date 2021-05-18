@@ -31,17 +31,12 @@ now_date = datetime.today().strftime('%d.%m.%Y')
 yesterday = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
 yesterday_rus = (datetime.today() - timedelta(days=1)).strftime('%d.%m.%Y')
 ### GOALIES OVERALL
-goalies = requests.get("https://api.nhle.com/stats/rest/ru/goalie/summary?isAggregate=false&isGame=false&sort=%5B%7B"
-                       "%22property%22:%22wins%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22savePct%22,"
-                       "%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp"
-                       "=gameTypeId=2%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+#https://api.nhle.com/stats/rest/ru/goalie/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22wins%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22savePct%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021
+goalies = requests.get("https://api.nhle.com/stats/rest/ru/goalie/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22wins%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22savePct%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
 goalies_parsed = jmespath.search("data[].{goalie: goalieFullName, team: teamAbbrevs, gaa: goalsAgainstAverage, saves: savePct, wins: wins}",
                                  goalies)
 ### GOALIES RUSSIA
-goalies_rus = requests.get("https://api.nhle.com/stats/rest/ru/goalie/summary?isAggregate=false&isGame=false&sort=%5B%7B"
-                       "%22property%22:%22wins%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22savePct%22,"
-                       "%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp"
-                       "=gameTypeId=2%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+goalies_rus = requests.get("https://api.nhle.com/stats/rest/ru/goalie/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22wins%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22savePct%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
 goalies_rus_parsed = jmespath.search("data[].{goalie: goalieFullName, team: teamAbbrevs, gaa: goalsAgainstAverage, saves: savePct, wins: wins}", goalies_rus)
 print(goalies_parsed)
 n = 1
