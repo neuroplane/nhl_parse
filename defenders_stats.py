@@ -15,23 +15,23 @@ yesterday = (datetime.today() - timedelta(days=1)).strftime('%Y-%m-%d')
 yesterday_rus = (datetime.today() - timedelta(days=1)).strftime('%d.%m.%Y')
 #STATS#########################################################
 field_players = requests.get(
-    "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+    "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
 field_players_parsed = jmespath.search(
     "data[].{playerId: playerId, name: skaterFullName, ppg: ppGoals, gp: gamesPlayed, toi: timeOnIcePerGame, team: teamAbbrevs, position: positionCode, goals: goals, assists: assists, points: points, plusminus: plusMinus}",
     field_players)
 #STATS#########################################################
 field_players_rus = requests.get(
-    "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1%20and%20gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20nationalityCode=%22RUS%22%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
+    "https://api.nhle.com/stats/rest/ru/skater/summary?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22points%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22goals%22,%22direction%22:%22DESC%22%7D,%7B%22property%22:%22assists%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=50&factCayenneExp=gamesPlayed%3E=1%20and%20gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20nationalityCode=%22RUS%22%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021").json()
 field_players_rus_parsed = jmespath.search(
     "data[].{playerId: playerId, name: skaterFullName, team: teamAbbrevs, goals: goals, assists: assists, points: points, plusminus: plusMinus, gwg: gameWinningGoals, position: positionCode ,shots: shots,pointspg: pointsPerGame}",
     field_players_rus)
 defs = requests.get(
-    "https://api.nhle.com/stats/rest/ru/skater/realtime?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22missedShots%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
+    "https://api.nhle.com/stats/rest/ru/skater/realtime?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22missedShots%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20positionCode%3D%22D%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
 ).json()
 defs_parsed = jmespath.search("data[].{takeaways: takeaways, blockedShots: blockedShots, pid: playerId, name: skaterFullName, hits:hits, bs: blockedShots}", defs
 )
 defs_rus = requests.get(
-    "https://api.nhle.com/stats/rest/ru/skater/realtime?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22missedShots%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=2%20and%20positionCode%3D%22D%22%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
+    "https://api.nhle.com/stats/rest/ru/skater/realtime?isAggregate=false&isGame=false&sort=%5B%7B%22property%22:%22missedShots%22,%22direction%22:%22DESC%22%7D%5D&start=0&limit=100&factCayenneExp=gamesPlayed%3E=1&cayenneExp=gameTypeId=3%20and%20positionCode%3D%22D%22%20and%20nationalityCode=%22RUS%22%20and%20seasonId%3C=20202021%20and%20seasonId%3E=20202021"
 ).json()
 defs_rus_parsed = jmespath.search("data[].{takeaways: takeaways, blockedShots: blockedShots, pid: playerId, name: skaterFullName, hits:hits, bs: blockedShots}", defs_rus
 )

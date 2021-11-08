@@ -73,7 +73,7 @@ with Image.open("pics/highlights.jpg") as im:
     ###### FIELD PLAYERS DRAW
     START_Y_FIELDPLAYERS = START_Y_SCORES + LINE_HEIGHT
     draw.line((50,  START_Y_FIELDPLAYERS+LINE_HEIGHT, SCW - 50, START_Y_FIELDPLAYERS+LINE_HEIGHT), fill=GREY, width=1)
-    draw.text((SCW / 2, START_Y_FIELDPLAYERS-30), 'ГОЛКИПЕРЬ', font=kroftsman, fill=GREY, anchor="mm")
+    draw.text((SCW / 2, START_Y_FIELDPLAYERS-30), 'ГОЛКИПЕРЬ В ПЛЕЙ-ОФФ', font=kroftsman, fill=GREY, anchor="mm")
     START_Y_FIELDPLAYERS = START_Y_FIELDPLAYERS + LINE_HEIGHT
     draw.line((50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2, SCW - 50, START_Y_FIELDPLAYERS + LINE_HEIGHT*2), fill=GREY,
               width=1)
