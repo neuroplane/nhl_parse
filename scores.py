@@ -1,6 +1,10 @@
 import os
+from os import listdir
+from os.path import isfile, join
 import sys
 import youtube_dl
+import ffmpeg
+import subprocess
 
 import jmespath
 import requests
@@ -47,18 +51,25 @@ for item in json_score_test:
     print(arrayToSend)
 
 
-ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s.%(ext)s', 'nocheckcertificate': True})
+ydl = youtube_dl.YoutubeDL({'outtmpl': '%(id)s.%(ext)s',
+                            'nocheckcertificate': True,
+                            'format':'HTTP_CLOUD_TABLET_60-2001'})
 with ydl:
     result = ydl.extract_info(
         'https://www.nhl.com/video/c-9457847 ',
         download=True # We just want to extract the info
     )
 
-if 'entries' in result:
-    # Can be a playlist or a list of videos
-    video = result['entries'][0]
-else:
-    # Just a video
-    video = result
+#subprocess.call(['ffmpeg', '-ss', '0:0:1.2',
+                 #'-i', '9457847.mp4', '-filter:v',
+                 #'fps=fps=30', '-maxrate', '2000k',
+                 #'out.mp4'])
+#HTTP_CLOUD_TABLET-2770
+#if 'entries' in result:
+#    # Can be a playlist or a list of videos
+#    video = result['entries'][0]
+##else:
+#    # Just a video
+#    video = result#
 
-print(video)
+#print(video)
