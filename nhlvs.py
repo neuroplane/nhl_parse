@@ -38,14 +38,8 @@ json_scores = []
 
 class elitebot:
     @staticmethod
-    def get_scores():  # первая функция
-        print("FUNCTION HAS BEEN CALLED")
-        json_score = requests.get(
-            "https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + yesterday + "&endDate=" + yesterday + "&hydrate=team,linescore,game(content(media(epg)))").json()
-        json_scores = jmespath.search(
-            "dates[].{Date: date, Games: games[].{date:gameDate, GameState: linescore.currentPeriod, AwayScore: teams.away.score, HomeScore: teams.home.score, Home: teams.home.team.abbreviation, Away:teams.away.team.abbreviation}}",
-            json_score)
-        print(json_scores)
+    def versus():  # первая функция
+        print("FUNCTION VERSUS() HAS BEEN CALLED")
 
 def isallowed(user_id):
     users = [77717804, 391371524]
@@ -57,8 +51,8 @@ async def set_default_commands(dp):
         types.BotCommand("start", "Что это за бот?"),
         types.BotCommand("help", "Краткое описание что это за бот."),
         types.BotCommand("whoami", "who ami i"),
-        types.BotCommand("check", "user check"),
-        types.BotCommand("latest_scores", "Последний игровой день")
+        types.BotCommand("field", "Field players comparison"),
+        types.BotCommand("goalies", "Goalies comparison")
     ])
 
 
@@ -69,48 +63,20 @@ async def start_help(message: types.Message):
     else:
         await message.reply("Нет авторизации для user id " + str(message.from_user.id))
 
-@dp.message_handler(commands="check")
+@dp.message_handler(commands="field")
 async def user_check(message: types.Message):
     user_allowed = isallowed(message.from_user.id)
-    await message.answer(user_allowed)
+    if isallowed(message.from_user.id):
+        await message.answer(user_allowed)
+        await message.answer("Запрос на полевых")
 
-@dp.message_handler(commands="whoami")
+@dp.message_handler(commands="goalies")
 async def whoami(message: types.Message):
+    await message.answer("Запрос на вратарей")
     await message.answer("user id: <code>" + str(message.from_user.id) + "</code>")
     print(message.chat.id)
     print(message)
-    await bot.send_video(chat_id= -1001790212138, width=640, height=360, video=open('9462532.mp4', 'rb'), supports_streaming=True)
 
-
-@dp.message_handler(commands="latest_scores")
-async def latest_scores(message: types.Message):
-    json_score = requests.get(
-        "https://statsapi.web.nhl.com/api/v1/schedule?startDate=" + yesterday + "&endDate=" + yesterday + "&hydrate=team,linescore,game(content(media(epg)))").json()
-    json_scores = jmespath.search(
-        "dates[].{Date: date, Games: games[].{date:gameDate, GameState: linescore.currentPeriod, AwayScore: teams.away.score, HomeScore: teams.home.score, Home: teams.home.team.abbreviation, Away:teams.away.team.abbreviation}}",
-        json_score)
-    latest = ""
-    for item in json_scores:
-        for game in item['Games']:
-            if game['GameState'] == 3:
-                Gamestate = ''
-            elif game['GameState'] == 4:
-                Gamestate = ' OT'
-            else:
-                Gamestate = ' SO'
-            latest = latest + game['Away'] + " " + str(game['AwayScore']) + ":" + str(game['HomeScore']) + " " + game['Home'] + "" + Gamestate + "\n"
-    print(latest)
-    await message.delete()
-    await message.answer(text="Последние матчи за " + yesterday_rus + ":\n" + "`" + latest + "`", parse_mode=types.ParseMode.MARKDOWN)
-#######################################################################
-
-
-
-@dp.channel_post_handler(chat_id=-1001790212138)
-async def channel_id(post: types.Message):
-    await post.delete()
-    await post.answer("Channel id: " + str(post.sender_chat.id) + ", " + post.sender_chat.title + " (" + post.text + ")")
-    print(post)
 
 if __name__ == '__main__':
     executor.start_polling(dp, on_startup=set_default_commands)  # начало поллинга
